@@ -20,6 +20,20 @@ return {
           ['\\'] = 'close_window',
         },
       },
+      filtered_items = {
+        visible = true,
+        hide_dotfiles = false,
+        hide_gitignored = false,
+        hide_hidden = false,
+        always_show = {
+          '.gitignore',
+          '.env',
+        },
+        never_show = {
+          '.DS_Store',
+          'thumbs.db',
+        },
+      },
     },
   },
 }
