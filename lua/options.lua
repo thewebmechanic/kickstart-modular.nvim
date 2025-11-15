@@ -3,6 +3,18 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.scriptencoding = 'utf-8'
+
+vim.opt.encoding = 'utf-8'
+
+vim.opt.fileencoding = 'utf-8'
+
+vim.opt.backspace = { 'start', 'eol', 'indent' }
+
+vim.opt.wildignore:append { '*/node_modules/*' }
+
+vim.opt.splitkeep = 'cursor'
+
 -- Make line numbers default
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
