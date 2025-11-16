@@ -1,34 +1,27 @@
--- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
-
--- For conciseness
+--------------------------------------- Global Settings ---------------------------------------
 local opts = { noremap = true, silent = true }
 
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- Exit terminal mode
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- Disable search highlight
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Disable the spacebar key's default behavior in Normal and Visual modes
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+-- Toggle line wrapping
+vim.keymap.set('n', '<leader>lw', '<cmd>set wrap!<CR>', opts)
+
+-- Exit insert mode
+vim.keymap.set('i', 'jj', '<Esc>')
+vim.keymap.set('i', 'jk', '<Esc>')
+vim.keymap.set('i', 'kj', '<Esc>')
+vim.keymap.set('i', '<C-c>', '<Esc>')
+
 -- Allow moving the cursor through wrapped lines with j, k
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
--- save file
-vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', opts)
-
--- save file without auto-formatting
-vim.keymap.set('n', '<leader>sn', '<cmd>noautocmd w <CR>', opts)
-
--- quit file
-vim.keymap.set('n', '<C-q>', '<cmd> q <CR>', opts)
-
--- delete single character without copying into register
-vim.keymap.set('n', 'x', '"_x', opts)
 
 -- Vertical scroll and center
 vim.keymap.set('n', '<C-d>', '<C-d>zz', opts)
@@ -38,59 +31,25 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
--- Resize with arrows
-vim.keymap.set('n', '<Up>', ':resize -2<CR>', opts)
-vim.keymap.set('n', '<Down>', ':resize +2<CR>', opts)
-vim.keymap.set('n', '<Left>', ':vertical resize -2<CR>', opts)
-vim.keymap.set('n', '<Right>', ':vertical resize +2<CR>', opts)
+-------------------------------------- Text manipulation ---------------------------------------
 
--- Buffers
-vim.keymap.set('n', '<Tab>', ':bnext<CR>', opts)
-vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', opts)
-vim.keymap.set('n', '<C-i>', '<C-i>', opts) -- to restore jump forward
-vim.keymap.set('n', '<leader>x', ':Bdelete!<CR>', opts) -- close buffer
-vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', opts) -- new buffer
+-- Move selected lines up and down
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'moves lines down in visual selection' })
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'moves lines up in visual selection' })
+
+-- Change indent in visual mode
+vim.keymap.set('v', '<', '<gv', opts)
+vim.keymap.set('v', '>', '>gv', opts)
+
+-- Delete single character without copying into register
+vim.keymap.set('n', 'x', '"_x', opts)
 
 -- Increment/decrement numbers
 vim.keymap.set('n', '<leader>+', '<C-a>', opts) -- increment
 vim.keymap.set('n', '<leader>-', '<C-x>', opts) -- decrement
 
--- Window management
-vim.keymap.set('n', '<leader>v', '<C-w>v', opts) -- split window vertically
-vim.keymap.set('n', '<leader>h', '<C-w>s', opts) -- split window horizontally
-vim.keymap.set('n', '<leader>se', '<C-w>=', opts) -- make split windows equal width & height
-vim.keymap.set('n', '<leader>xs', ':close<CR>', opts) -- close current split window
-
--- Navigation
-vim.keymap.set('n', '<c-h>', '<c-w><c-h>', { desc = 'move focus to the left window' })
-vim.keymap.set('n', '<c-l>', '<c-w><c-l>', { desc = 'move focus to the right window' })
-vim.keymap.set('n', '<c-j>', '<c-w><c-j>', { desc = 'move focus to the lower window' })
-vim.keymap.set('n', '<c-k>', '<c-w><c-k>', { desc = 'move focus to the upper window' })
-
--- Tabs
-vim.keymap.set('n', '<leader>to', ':tabnew<CR>', opts) -- open new tab
-vim.keymap.set('n', '<leader>tx', ':tabclose<CR>', opts) -- close current tab
-vim.keymap.set('n', '<leader>tn', ':tabn<CR>', opts) --  go to next tab
-vim.keymap.set('n', '<leader>tp', ':tabp<CR>', opts) --  go to previous tab
-
--- Toggle line wrapping
-vim.keymap.set('n', '<leader>lw', '<cmd>set wrap!<CR>', opts)
-
--- Press jk fast to exit insert mode
-vim.keymap.set('i', 'jk', '<ESC>', opts)
-vim.keymap.set('i', 'kj', '<ESC>', opts)
-
--- Stay in indent mode
-vim.keymap.set('v', '<', '<gv', opts)
-vim.keymap.set('v', '>', '>gv', opts)
-
--- Move selected lines up and down in visual mode
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
-
--- Select text and make it uppercase
+-- Select text and make it uppercase or lowercase
 vim.keymap.set('v', '<leader>u', 'gU', { desc = 'Uppercase selection' })
--- Or lowercase
 vim.keymap.set('v', '<leader>l', 'gu', { desc = 'Lowercase selection' })
 
 -- Keep last yanked when pasting
@@ -103,19 +62,7 @@ vim.keymap.set('n', '<leader>j', '*``cgn', opts)
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. otherwise, you normally need to press <c-\><c-n>, which
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- [[ basic autocommands ]]
---  see `:help lua-guide-autocommands`
-
--- highlight when yanking (copying) text
---  try it with `yap` in normal mode
---  see `:help vim.hl.on_yank()`
+-- Highlight on copy
 vim.api.nvim_create_autocmd('textyankpost', {
   desc = 'highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -123,9 +70,50 @@ vim.api.nvim_create_autocmd('textyankpost', {
     vim.hl.on_yank()
   end,
 })
+------------------------------------- Files, Buffers, Windows and Tabs -----------------------------------------
 
--- vim: ts=2 sts=2 sw=2 et
---
+-- Save file
+vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', opts)
+
+-- Save file without auto-formatting
+vim.keymap.set('n', '<leader>sn', '<cmd>noautocmd w <CR>', opts)
+
+-- Quit file
+vim.keymap.set('n', '<C-q>', '<cmd> q <CR>', opts)
+
+-- Buffers
+vim.keymap.set('n', '<Tab>', ':bnext<CR>', opts)
+vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', opts)
+vim.keymap.set('n', '<C-i>', '<C-i>', opts) -- to restore jump forward
+vim.keymap.set('n', '<leader>x', ':Bdelete!<CR>', opts) -- close buffer
+vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', opts) -- new buffer
+
+-- Window management
+vim.keymap.set('n', '<leader>v', '<C-w>v', opts) -- split window vertically
+vim.keymap.set('n', '<leader>h', '<C-w>s', opts) -- split window horizontally
+vim.keymap.set('n', '<leader>se', '<C-w>=', opts) -- make split windows equal width & height
+vim.keymap.set('n', '<leader>xs', ':close<CR>', opts) -- close current split window
+
+-- Window navigation
+vim.keymap.set('n', '<c-h>', '<c-w><c-h>', { desc = 'move focus to the left window' })
+vim.keymap.set('n', '<c-l>', '<c-w><c-l>', { desc = 'move focus to the right window' })
+vim.keymap.set('n', '<c-j>', '<c-w><c-j>', { desc = 'move focus to the lower window' })
+vim.keymap.set('n', '<c-k>', '<c-w><c-k>', { desc = 'move focus to the upper window' })
+
+-- Window size manipulation with arrows
+vim.keymap.set('n', '<Up>', ':resize -2<CR>', opts)
+vim.keymap.set('n', '<Down>', ':resize +2<CR>', opts)
+vim.keymap.set('n', '<Left>', ':vertical resize -2<CR>', opts)
+vim.keymap.set('n', '<Right>', ':vertical resize +2<CR>', opts)
+
+-- Tabs management
+vim.keymap.set('n', '<leader>to', ':tabnew<cr>', opts) -- open new tab
+vim.keymap.set('n', '<leader>tx', ':tabclose<cr>', opts) -- close current tab
+vim.keymap.set('n', '<leader>tn', ':tabn<cr>', opts) --  go to next tab
+vim.keymap.set('n', '<leader>tp', ':tabp<cr>', opts) --  go to previous tab
+
+------------------------------------ Diagnostics --------------------------------------
+
 -- Toggle diagnostics
 local diagnostics_active = true
 
